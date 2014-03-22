@@ -1,0 +1,9 @@
+form method='POST' action='/books'
+  input type='text' name='name'
+  input type='submit' value='Start'
+
+h2 Current Books
+ul
+  - for book in books
+    li 
+      a href='/books/#{book.slug}' = book.name

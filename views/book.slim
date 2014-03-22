@@ -1,0 +1,29 @@
+h2 = book.name
+
+h3 Chapters
+
+ol
+  - for chapter in chapters
+    li 
+      a href='/books/#{book.slug}/#{chapter.slug}' = chapter.name
+
+h3 Finish Chapter
+
+form method='POST' action='/books/#{book.slug}'
+  label for='chapter' Chapter
+  input type='text' name='chapter'
+
+  p What is the chapter about as a whole?
+  textarea name="question1"
+
+  p What is being said in detail, and how?
+  textarea name="question2"
+
+  p Is the what is being said true, in whole or part?
+  textarea name="question3"
+
+  p What of it? If the chapter has given you information, you must ask about its significance. Why does the author think it is important to know these things?
+  textarea name="question4"
+
+  p
+    input type='submit'
