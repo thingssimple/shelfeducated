@@ -27,3 +27,21 @@ form method='POST' action='/books/#{book.slug}/chapters'
 
   p
     input type='submit'
+
+h3 Finish Book
+
+form method='POST' action='/books/#{book.slug}/conclusion'
+  p What is the book about as a whole?
+  textarea name="question1"
+
+  p What is being said in detail, and how?
+  textarea name="question2"
+
+  p Is the what is being said true, in whole or part?
+  textarea name="question3"
+
+  p What of it? If the book has given you information, you must ask about its significance. Why does the author think it is important to know these things?
+  textarea name="question4"
+
+  p
+    input type='submit'
