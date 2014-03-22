@@ -1,9 +1,13 @@
-form method='POST' action='/books'
-  input type='text' name='name'
-  input type='submit' value='Start'
-
-h2 Current Books
-ul
+table.table.table-striped
+  tr
+    th My Books
   - for book in books
-    li 
-      a href='/books/#{book.slug}' = book.name
+    tr
+      td
+        a href='/books/#{book.slug}' = book.name
+
+form method='POST' action='/books' role='form'
+  .input-group
+    input.form-control type='text' name='name'
+    .input-group-btn
+      input.btn.btn-default type='submit' value='Start Book'

@@ -20,7 +20,8 @@ end
 get '/books/:book_slug' do
   book = Book.find_by_slug params[:book_slug]
   chapters = Chapter.where :book_id => book.id
-  slim :book, :locals => {:book => book, :chapters => chapters}
+  conclusion = Conclusion.find_by_book_id book.id
+  slim :book, :locals => {:book => book, :chapters => chapters, :conclusion => conclusion}
 end
 
 post '/books/:book_slug/chapters' do

@@ -1,47 +1,67 @@
-h2 = book.name
+h2.page-header = book.name
 
-h3 Chapters
-
-ol
+table.table.table-striped
+  tr
+    th Chapters
   - for chapter in chapters
-    li 
-      a href='/books/#{book.slug}/chapters/#{chapter.slug}' = chapter.name
+    tr
+      td
+        a href='/books/#{book.slug}/chapters/#{chapter.slug}' = chapter.name
+  - if conclusion
+    tr
+      td
+        a href='/books/#{book.slug}/conclusion' Conclusion
 
-h3 Finish Chapter
+h3.page-header Finish Chapter
 
-form method='POST' action='/books/#{book.slug}/chapters'
-  label for='chapter' Chapter
-  input type='text' name='chapter'
+.finish-chapter
+  form method='POST' action='/books/#{book.slug}/chapters' role='form'
+    .form-group
+      label for='chapter' Chapter
+      input.form-control type='text' name='chapter'
 
-  p What is the chapter about as a whole?
-  textarea name="question1"
+    .form-group
+      label for='question1' What is the chapter about as a whole?
+      textarea.form-control name="question1"
 
-  p What is being said in detail, and how?
-  textarea name="question2"
+    .form-group
+      label for='question2' What is being said in detail, and how?
+      textarea.form-control name="question2"
 
-  p Is the what is being said true, in whole or part?
-  textarea name="question3"
+    .form-group
+      label for='question3' Is the what is being said true, in whole or part?
+      textarea.form-control name="question3"
 
-  p What of it? If the chapter has given you information, you must ask about its significance. Why does the author think it is important to know these things?
-  textarea name="question4"
+    .form-group
+      label for='question4' What of it? If the chapter has given you information, you must ask about its significance. Why does the author think it is important to know these things?
+      textarea.form-control name="question4"
 
-  p
-    input type='submit'
+    p
+      input.btn.btn-default type='submit' value='Finish Chapter'
 
-h3 Finish Book
+h3.page-header Finish Book
 
-form method='POST' action='/books/#{book.slug}/conclusion'
-  p What is the book about as a whole?
-  textarea name="question1"
+.finish-book
+  form method='POST' action='/books/#{book.slug}/chapters' role='form'
+    .form-group
+      label for='chapter' Chapter
+      input.form-control type='text' name='chapter'
 
-  p What is being said in detail, and how?
-  textarea name="question2"
+    .form-group
+      label for='question1' What is the chapter about as a whole?
+      textarea.form-control name="question1"
 
-  p Is the what is being said true, in whole or part?
-  textarea name="question3"
+    .form-group
+      label for='question2' What is being said in detail, and how?
+      textarea.form-control name="question2"
 
-  p What of it? If the book has given you information, you must ask about its significance. Why does the author think it is important to know these things?
-  textarea name="question4"
+    .form-group
+      label for='question3' Is the what is being said true, in whole or part?
+      textarea.form-control name="question3"
 
-  p
-    input type='submit'
+    .form-group
+      label for='question4' What of it? If the chapter has given you information, you must ask about its significance. Why does the author think it is important to know these things?
+      textarea.form-control name="question4"
+
+    p
+      input.btn.btn-default type='submit' value='Finish Book'
