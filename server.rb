@@ -22,7 +22,7 @@ get '/books/:book_slug' do
   slim :book, :locals => {:book => book, :chapters => chapters}
 end
 
-post '/books/:book_slug' do
+post '/books/:book_slug/chapters' do
   book = Book.find_by_slug params[:book_slug]
   chapter = Chapter.create({
     :book_id => book.id,
@@ -33,10 +33,10 @@ post '/books/:book_slug' do
     :question3 => params[:question3],
     :question4 => params[:question4]
   })
-  redirect to "/books/#{book.slug}/#{chapter.slug}"
+  redirect to "/books/#{book.slug}/chapters/#{chapter.slug}"
 end
 
-get '/books/:book_slug/:chapter_slug' do
+get '/books/:book_slug/chapters/:chapter_slug' do
   book = Book.find_by_slug params[:book_slug]
   chapter = Chapter.find_by_slug params[:chapter_slug]
   slim :chapter, :locals => {:book => book, :chapter => chapter}

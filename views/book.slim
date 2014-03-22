@@ -5,11 +5,11 @@ h3 Chapters
 ol
   - for chapter in chapters
     li 
-      a href='/books/#{book.slug}/#{chapter.slug}' = chapter.name
+      a href='/books/#{book.slug}/chapters/#{chapter.slug}' = chapter.name
 
 h3 Finish Chapter
 
-form method='POST' action='/books/#{book.slug}'
+form method='POST' action='/books/#{book.slug}/chapters'
   label for='chapter' Chapter
   input type='text' name='chapter'
 
