@@ -24,6 +24,12 @@ helpers do
       redirect to '/signin'
     end
   end
+
+  def owner_of_book_required(book)
+    if session[:user_id] != book.user_id
+      redirect to '/'
+    end
+  end
 end
 
 #
@@ -32,7 +38,7 @@ end
 
 get '/' do
   if session.has_key? :user_id
-    slim :dashboard, :locals => {:books => Book.all}
+    slim :dashboard, :locals => {:books => Book.where(:user_id => session[:user_id])}
   else
     slim :index
   end
@@ -40,15 +46,20 @@ end
 
 post '/books' do
   signin_required
+  book = Book.create({
+    :user_id => session[:user_id].to_i,
+    :name => params[:name],
+    :slug => slugify(params[:name])
+  })
 
-  book = Book.create :name => params[:name], :slug => slugify(params[:name])
   redirect to "/books/#{book.slug}"
 end
 
 get '/books/:book_slug' do
   signin_required
-
   book = Book.find_by_slug params[:book_slug]
+  owner_of_book_required book
+
   chapters = Chapter.where :book_id => book.id
   conclusion = Conclusion.find_by_book_id book.id
   slim :book, :locals => {:book => book, :chapters => chapters, :conclusion => conclusion}
@@ -56,8 +67,9 @@ end
 
 post '/books/:book_slug/chapters' do
   signin_required
-
   book = Book.find_by_slug params[:book_slug]
+  owner_of_book_required book
+
   chapter = Chapter.create({
     :book_id => book.id,
     :name => params[:chapter],
@@ -72,16 +84,18 @@ end
 
 get '/books/:book_slug/chapters/:chapter_slug' do
   signin_required
-
   book = Book.find_by_slug params[:book_slug]
+  owner_of_book_required book
+
   chapter = Chapter.find_by_slug params[:chapter_slug]
   slim :chapter, :locals => {:book => book, :chapter => chapter}
 end
 
 post '/books/:book_slug/conclusion' do
   signin_required
-
   book = Book.find_by_slug params[:book_slug]
+  owner_of_book_required book
+
   chapter = Conclusion.create({
     :book_id => book.id,
     :question1 => params[:question1],
@@ -94,8 +108,9 @@ end
 
 get '/books/:book_slug/conclusion' do
   signin_required
-
   book = Book.find_by_slug params[:book_slug]
+  owner_of_book_required book
+
   conclusion = Conclusion.find_by_book_id book.id
   slim :conclusion, :locals => {:book => book, :conclusion => conclusion}
 end
