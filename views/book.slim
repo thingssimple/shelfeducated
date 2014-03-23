@@ -39,17 +39,15 @@ h3.page-header Record Chapter
       label for='question4' What of it? If the chapter has given you information, you must ask about its significance. Why does the author think it is important to know these things?
       textarea.form-control name="question4"
 
+    input type="hidden" name='#{Rack::Csrf.field}' value='#{Rack::Csrf.token(env)}'
+
     p
       input.btn.btn-default type='submit' value='Record Chapter'
 
 h3.page-header Record Book
 
 .finish-book
-  form method='POST' action='/books/#{book.slug}/chapters' role='form'
-    .form-group
-      label for='chapter' Chapter
-      input.form-control type='text' name='chapter'
-
+  form method='POST' action='/books/#{book.slug}/conclusion' role='form'
     .form-group
       label for='question1' What is the chapter about as a whole?
       textarea.form-control name="question1"
@@ -65,6 +63,8 @@ h3.page-header Record Book
     .form-group
       label for='question4' What of it? If the chapter has given you information, you must ask about its significance. Why does the author think it is important to know these things?
       textarea.form-control name="question4"
+
+    input type="hidden" name='#{Rack::Csrf.field}' value='#{Rack::Csrf.token(env)}'
 
     p
       input.btn.btn-default type='submit' value='Record Book'

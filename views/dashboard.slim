@@ -11,6 +11,7 @@
     strong No books started
 
 form method='POST' action='/books' role='form'
+  input type="hidden" name='#{Rack::Csrf.field}' value='#{Rack::Csrf.token(env)}'
   .input-group
     input.form-control type='text' name='name'
     .input-group-btn

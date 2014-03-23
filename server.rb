@@ -1,4 +1,5 @@
 require 'bcrypt'
+require 'rack/csrf'
 require 'sinatra'
 require 'sinatra/activerecord'
 require 'slim'
@@ -11,7 +12,8 @@ require './models/conclusion'
 require './models/user'
 
 configure do
-  enable :sessions
+  use Rack::Session::Cookie, :secret => "this is a long string that really needs to be better"
+  use Rack::Csrf
 end
 
 helpers do
