@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140322190416) do
+ActiveRecord::Schema.define(version: 20140323084036) do
 
   create_table "books", force: true do |t|
     t.string "name"
@@ -33,6 +33,12 @@ ActiveRecord::Schema.define(version: 20140322190416) do
     t.string  "question2"
     t.string  "question3"
     t.string  "question4"
+  end
+
+  create_table "users", force: true do |t|
+    t.string "email"
+    t.string "password"
+    t.string "password_salt"
   end
 
 end

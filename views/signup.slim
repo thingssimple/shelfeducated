@@ -1,0 +1,14 @@
+form method='POST' role='form'
+  .form-group
+    label for='email' Email
+    input.form-control type='text' name='email' value='#{params[:email]}'
+
+  .form-group
+    label for='password' Password
+    input.form-control type='password' name='password'
+
+  .form-group
+    label for='confirm_password' Confirm Password
+    input.form-control type='password' name='confirm_password'
+
+  input.btn.btn-default type='submit' value='Sign Up'

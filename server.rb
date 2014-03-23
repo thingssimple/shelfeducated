@@ -1,3 +1,4 @@
+require 'bcrypt'
 require 'sinatra'
 require 'sinatra/activerecord'
 require 'slim'
@@ -7,9 +8,22 @@ set :database, "sqlite3:///shelfeducated.db"
 require './models/book'
 require './models/chapter'
 require './models/conclusion'
+require './models/user'
+
+configure do
+  enable :sessions
+end
+
+#
+# books
+#
 
 get '/' do
-  slim :index, :locals => {:books => Book.all}
+  if session.has_key? :user_id
+    slim :dashboard, :locals => {:books => Book.all}
+  else
+    slim :index
+  end
 end
 
 post '/books' do
@@ -60,6 +74,49 @@ get '/books/:book_slug/conclusion' do
   book = Book.find_by_slug params[:book_slug]
   conclusion = Conclusion.find_by_book_id book.id
   slim :conclusion, :locals => {:book => book, :conclusion => conclusion}
+end
+
+#
+# users
+#
+
+get '/signup' do
+  slim :signup
+end
+
+post '/signup' do
+  if params[:password] == params[:confirm_password]
+    salt = BCrypt::Engine.generate_salt
+    hash = BCrypt::Engine.hash_secret params[:password], salt
+    user = User.create({
+      :email => params[:email],
+      :password => hash,
+      :password_salt => salt
+    })
+    session[:user_id] = user.id
+    redirect to '/'
+  else
+    slim :signup, :locals => {:params => params}
+  end
+end
+
+get '/signin' do
+  slim :signin
+end
+
+post '/signin' do
+  user = User.find_by_email params[:email]
+  if user.password == BCrypt::Engine.hash_secret(params[:password], user.password_salt)
+    session[:user_id] = user.id
+    redirect to '/'
+  else
+    slim :signin, :locals => {:params => params}
+  end
+end
+
+get '/signout' do
+  session.delete :user_id
+  redirect to '/'
 end
 
 def slugify value
