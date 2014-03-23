@@ -14,6 +14,18 @@ configure do
   enable :sessions
 end
 
+helpers do
+  def signed_in?
+    not session[:user_id].nil?
+  end
+
+  def signin_required
+    if not signed_in?
+      redirect to '/signin'
+    end
+  end
+end
+
 #
 # books
 #
@@ -27,11 +39,15 @@ get '/' do
 end
 
 post '/books' do
+  signin_required
+
   book = Book.create :name => params[:name], :slug => slugify(params[:name])
   redirect to "/books/#{book.slug}"
 end
 
 get '/books/:book_slug' do
+  signin_required
+
   book = Book.find_by_slug params[:book_slug]
   chapters = Chapter.where :book_id => book.id
   conclusion = Conclusion.find_by_book_id book.id
@@ -39,6 +55,8 @@ get '/books/:book_slug' do
 end
 
 post '/books/:book_slug/chapters' do
+  signin_required
+
   book = Book.find_by_slug params[:book_slug]
   chapter = Chapter.create({
     :book_id => book.id,
@@ -53,12 +71,16 @@ post '/books/:book_slug/chapters' do
 end
 
 get '/books/:book_slug/chapters/:chapter_slug' do
+  signin_required
+
   book = Book.find_by_slug params[:book_slug]
   chapter = Chapter.find_by_slug params[:chapter_slug]
   slim :chapter, :locals => {:book => book, :chapter => chapter}
 end
 
 post '/books/:book_slug/conclusion' do
+  signin_required
+
   book = Book.find_by_slug params[:book_slug]
   chapter = Conclusion.create({
     :book_id => book.id,
@@ -71,6 +93,8 @@ post '/books/:book_slug/conclusion' do
 end
 
 get '/books/:book_slug/conclusion' do
+  signin_required
+
   book = Book.find_by_slug params[:book_slug]
   conclusion = Conclusion.find_by_book_id book.id
   slim :conclusion, :locals => {:book => book, :conclusion => conclusion}
@@ -115,6 +139,8 @@ post '/signin' do
 end
 
 get '/signout' do
+  signin_required
+
   session.delete :user_id
   redirect to '/'
 end
