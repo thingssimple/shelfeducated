@@ -20,9 +20,9 @@ html
           - if signed_in?
             - if request.path != "/" && request.path == "/#{book.user_id}/#{book.slug}"
               li
-                a.glyphicon.glyphicon-record data-toggle="modal" data-target="#finish-chapter"
+                a.glyphicon.glyphicon-record data-toggle="modal" data-target="#finish-chapter" href=""
               li
-                a.glyphicon.glyphicon-flag data-toggle="modal" data-target="#finish-book"
+                a.glyphicon.glyphicon-flag data-toggle="modal" data-target="#finish-book" href=""
             li
               a.glyphicon.glyphicon-log-out href="/signout"
           - else

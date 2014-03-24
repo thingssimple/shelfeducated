@@ -19,6 +19,7 @@ h2.page-header = book.name
 #finish-chapter.modal.fade tabindex="-1" role="dialog"
   .modal-dialog
     .modal-content
+      .modal-header
       .modal-body
         .finish-chapter
           form method='POST' action='/#{book.user_id}/#{book.slug}/chapters' role='form'
@@ -45,11 +46,12 @@ h2.page-header = book.name
             input type="hidden" name='#{Rack::Csrf.field}' value='#{Rack::Csrf.token(env)}'
 
             p
-              input.btn.btn-default type='submit' value='Record Chapter'
+              button.btn.btn-default.glyphicon.glyphicon-ok type='submit'
 
 #finish-book.modal.fade tabindex="-1" role="dialog"
   .modal-dialog
     .modal-content
+      .modal-header
       .modal-body
         .finish-book
           form method='POST' action='/#{book.user_id}/#{book.slug}/conclusion' role='form'
@@ -72,4 +74,4 @@ h2.page-header = book.name
             input type="hidden" name='#{Rack::Csrf.field}' value='#{Rack::Csrf.token(env)}'
 
             p
-              input.btn.btn-default type='submit' value='Record Conclusion'
+              button.btn.btn-default.glyphicon.glyphicon-ok type='submit'
