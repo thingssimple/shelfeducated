@@ -18,7 +18,7 @@ html
             .glyphicon.glyphicon-tree-deciduous
         ul.nav.navbar-nav.navbar-right
           - if signed_in?
-            - if request.path != '/'
+            - if request.path != "/" && request.path == "/#{book.user_id}/#{book.slug}"
               li
                 a.glyphicon.glyphicon-record data-toggle="modal" data-target="#finish-chapter"
               li
