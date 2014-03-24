@@ -5,6 +5,9 @@ gem 'pg'
 gem 'activerecord'
 gem 'sinatra-activerecord'
 gem 'slim'
-gem 'sqlite3'
 gem 'bcrypt'
 gem 'rack_csrf'
+
+group :development, :test do
+  gem 'sqlite3'
+end
