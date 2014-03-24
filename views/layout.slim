@@ -11,8 +11,26 @@ html
     script src='//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js'
 
   body
+    nav.navbar.navbar-default role='navigation'
+      .container
+        .navbar-header
+          a.navbar-brand href="/"
+            .glyphicon.glyphicon-tree-deciduous
+        ul.nav.navbar-nav.navbar-right
+          - if signed_in?
+            - if request.path != '/'
+              li
+                a.glyphicon.glyphicon-record data-toggle="modal" data-target="#finish-chapter"
+              li
+                a.glyphicon.glyphicon-flag data-toggle="modal" data-target="#finish-book"
+            li
+              a.glyphicon.glyphicon-log-out href="/signout"
+          - else
+            li
+              a.glyphicon.glyphicon-log-in href="/signin"
+            li
+              a.glyphicon.glyphicon-new-window href="/signup"
+
     .container
-      h1.page-header
-        a href="/" Shelf Educated
 
       == yield
