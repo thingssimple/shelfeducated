@@ -7,18 +7,18 @@ h2.page-header = book.name
     - for chapter in chapters
       tr
         td
-          a href='/books/#{book.slug}/chapters/#{chapter.slug}' = chapter.name
+          a href='/#{book.user_id}/#{book.slug}/chapters/#{chapter.slug}' = chapter.name
     - if conclusion
       tr
         td
-          a href='/books/#{book.slug}/conclusion' Conclusion
+          a href='/#{book.user_id}/#{book.slug}/conclusion' Conclusion
 - else
   strong No chapters recorded.
 
 h3.page-header Record Chapter
 
 .finish-chapter
-  form method='POST' action='/books/#{book.slug}/chapters' role='form'
+  form method='POST' action='/#{book.user_id}/#{book.slug}/chapters' role='form'
     .form-group
       label for='chapter' Chapter Title
       input.form-control type='text' name='chapter'
@@ -47,7 +47,7 @@ h3.page-header Record Chapter
 h3.page-header Record Book
 
 .finish-book
-  form method='POST' action='/books/#{book.slug}/conclusion' role='form'
+  form method='POST' action='/#{book.user_id}/#{book.slug}/conclusion' role='form'
     .form-group
       label for='question1' What is the chapter about as a whole?
       textarea.form-control name="question1"

@@ -5,12 +5,12 @@
     - for book in books
       tr
         td
-          a href='/books/#{book.slug}' = book.name
+          a href='/#{user_id}/#{book.slug}' = book.name
 - else
   p
     strong No books started
 
-form method='POST' action='/books' role='form'
+form method='POST' action='/#{user_id}' role='form'
   input type="hidden" name='#{Rack::Csrf.field}' value='#{Rack::Csrf.token(env)}'
   .input-group
     input.form-control type='text' name='name'

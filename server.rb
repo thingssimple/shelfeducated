@@ -35,89 +35,6 @@ helpers do
 end
 
 #
-# books
-#
-
-get '/' do
-  if session.has_key? :user_id
-    slim :dashboard, :locals => {:books => Book.where(:user_id => session[:user_id])}
-  else
-    slim :index
-  end
-end
-
-post '/books' do
-  signin_required
-  book = Book.create({
-    :user_id => session[:user_id].to_i,
-    :name => params[:name],
-    :slug => slugify(params[:name])
-  })
-
-  redirect to "/books/#{book.slug}"
-end
-
-get '/books/:book_slug' do
-  signin_required
-  book = Book.find_by_slug_and_user_id params[:book_slug], session[:user_id]
-  owner_of_book_required book
-
-  chapters = Chapter.where :book_id => book.id
-  conclusion = Conclusion.find_by_book_id book.id
-  slim :book, :locals => {:book => book, :chapters => chapters, :conclusion => conclusion}
-end
-
-post '/books/:book_slug/chapters' do
-  signin_required
-  book = Book.find_by_slug_and_user_id params[:book_slug], session[:user_id]
-  owner_of_book_required book
-
-  chapter = Chapter.create({
-    :book_id => book.id,
-    :name => params[:chapter],
-    :slug => slugify(params[:chapter]),
-    :question1 => params[:question1],
-    :question2 => params[:question2],
-    :question3 => params[:question3],
-    :question4 => params[:question4]
-  })
-  redirect to "/books/#{book.slug}/chapters/#{chapter.slug}"
-end
-
-get '/books/:book_slug/chapters/:chapter_slug' do
-  signin_required
-  book = Book.find_by_slug_and_user_id params[:book_slug], session[:user_id]
-  owner_of_book_required book
-
-  chapter = Chapter.find_by_slug_and_book_id params[:chapter_slug], book.id
-  slim :chapter, :locals => {:book => book, :chapter => chapter}
-end
-
-post '/books/:book_slug/conclusion' do
-  signin_required
-  book = Book.find_by_slug_and_user_id params[:book_slug], session[:user_id]
-  owner_of_book_required book
-
-  chapter = Conclusion.create({
-    :book_id => book.id,
-    :question1 => params[:question1],
-    :question2 => params[:question2],
-    :question3 => params[:question3],
-    :question4 => params[:question4]
-  })
-  redirect to "/books/#{book.slug}/conclusion"
-end
-
-get '/books/:book_slug/conclusion' do
-  signin_required
-  book = Book.find_by_slug_and_user_id params[:book_slug], session[:user_id]
-  owner_of_book_required book
-
-  conclusion = Conclusion.find_by_book_id book.id
-  slim :conclusion, :locals => {:book => book, :conclusion => conclusion}
-end
-
-#
 # users
 #
 
@@ -160,6 +77,90 @@ get '/signout' do
 
   session.delete :user_id
   redirect to '/'
+end
+
+#
+# books
+#
+
+get '/' do
+  if session.has_key? :user_id
+    user_id = session[:user_id]
+    slim :dashboard, :locals => {:books => Book.where(:user_id => user_id), :user_id => user_id}
+  else
+    slim :index
+  end
+end
+
+post '/:user_id' do
+  signin_required
+  book = Book.create({
+    :user_id => session[:user_id].to_i,
+    :name => params[:name],
+    :slug => slugify(params[:name])
+  })
+
+  redirect to "/#{book.user_id}/#{book.slug}"
+end
+
+get '/:user_id/:book_slug' do
+  signin_required
+  book = Book.find_by_slug_and_user_id params[:book_slug], params[:user_id]
+  owner_of_book_required book
+
+  chapters = Chapter.where :book_id => book.id
+  conclusion = Conclusion.find_by_book_id book.id
+  slim :book, :locals => {:book => book, :chapters => chapters, :conclusion => conclusion}
+end
+
+post '/:user_id/:book_slug/chapters' do
+  signin_required
+  book = Book.find_by_slug_and_user_id params[:book_slug], session[:user_id]
+  owner_of_book_required book
+
+  chapter = Chapter.create({
+    :book_id => book.id,
+    :name => params[:chapter],
+    :slug => slugify(params[:chapter]),
+    :question1 => params[:question1],
+    :question2 => params[:question2],
+    :question3 => params[:question3],
+    :question4 => params[:question4]
+  })
+  redirect to "/#{book.user_id}/#{book.slug}/chapters/#{chapter.slug}"
+end
+
+get '/:user_id/:book_slug/chapters/:chapter_slug' do
+  signin_required
+  book = Book.find_by_slug_and_user_id params[:book_slug], session[:user_id]
+  owner_of_book_required book
+
+  chapter = Chapter.find_by_slug_and_book_id params[:chapter_slug], book.id
+  slim :chapter, :locals => {:book => book, :chapter => chapter}
+end
+
+post '/:user_id/:book_slug/conclusion' do
+  signin_required
+  book = Book.find_by_slug_and_user_id params[:book_slug], session[:user_id]
+  owner_of_book_required book
+
+  chapter = Conclusion.create({
+    :book_id => book.id,
+    :question1 => params[:question1],
+    :question2 => params[:question2],
+    :question3 => params[:question3],
+    :question4 => params[:question4]
+  })
+  redirect to "/#{book.user_id}/#{book.slug}/conclusion"
+end
+
+get '/:user_id/:book_slug/conclusion' do
+  signin_required
+  book = Book.find_by_slug_and_user_id params[:book_slug], session[:user_id]
+  owner_of_book_required book
+
+  conclusion = Conclusion.find_by_book_id book.id
+  slim :conclusion, :locals => {:book => book, :conclusion => conclusion}
 end
 
 def slugify value
