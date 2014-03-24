@@ -59,7 +59,7 @@ end
 
 get '/books/:book_slug' do
   signin_required
-  book = Book.find_by_slug params[:book_slug]
+  book = Book.find_by_slug_and_user_id params[:book_slug], session[:user_id]
   owner_of_book_required book
 
   chapters = Chapter.where :book_id => book.id
@@ -69,7 +69,7 @@ end
 
 post '/books/:book_slug/chapters' do
   signin_required
-  book = Book.find_by_slug params[:book_slug]
+  book = Book.find_by_slug_and_user_id params[:book_slug], session[:user_id]
   owner_of_book_required book
 
   chapter = Chapter.create({
@@ -86,16 +86,16 @@ end
 
 get '/books/:book_slug/chapters/:chapter_slug' do
   signin_required
-  book = Book.find_by_slug params[:book_slug]
+  book = Book.find_by_slug_and_user_id params[:book_slug], session[:user_id]
   owner_of_book_required book
 
-  chapter = Chapter.find_by_slug params[:chapter_slug]
+  chapter = Chapter.find_by_slug_and_book_id params[:chapter_slug], book.id
   slim :chapter, :locals => {:book => book, :chapter => chapter}
 end
 
 post '/books/:book_slug/conclusion' do
   signin_required
-  book = Book.find_by_slug params[:book_slug]
+  book = Book.find_by_slug_and_user_id params[:book_slug], session[:user_id]
   owner_of_book_required book
 
   chapter = Conclusion.create({
@@ -110,7 +110,7 @@ end
 
 get '/books/:book_slug/conclusion' do
   signin_required
-  book = Book.find_by_slug params[:book_slug]
+  book = Book.find_by_slug_and_user_id params[:book_slug], session[:user_id]
   owner_of_book_required book
 
   conclusion = Conclusion.find_by_book_id book.id
