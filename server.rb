@@ -43,7 +43,9 @@ get '/signup' do
 end
 
 post '/signup' do
-  if params[:password] == params[:confirm_password]
+  password_confirmed = params[:password] == params[:confirm_password]
+  email_available = User.find_by(email: params[:email]).nil?
+  if password_confirmed and email_available
     salt = BCrypt::Engine.generate_salt
     hash = BCrypt::Engine.hash_secret params[:password], salt
     user = User.create({
