@@ -13,58 +13,68 @@ h2.page-header = book.name
         td
           a href='/#{book.user_id}/#{book.slug}/conclusion' Conclusion
 - else
-  strong No chapters recorded.
+  p
+    strong No chapters recorded.
 
-h3.page-header Record Chapter
+p
+  button.btn.btn-primary data-toggle="modal" data-target="#finish-chapter" Record Chapter
+p
+  button.btn.btn-primary data-toggle="modal" data-target="#finish-book" Record Conclusion
 
-.finish-chapter
-  form method='POST' action='/#{book.user_id}/#{book.slug}/chapters' role='form'
-    .form-group
-      label for='chapter' Chapter Title
-      input.form-control type='text' name='chapter'
+#finish-chapter.modal.fade tabindex="-1" role="dialog"
+  .modal-dialog
+    .modal-content
+      .modal-body
+        .finish-chapter
+          form method='POST' action='/#{book.user_id}/#{book.slug}/chapters' role='form'
+            .form-group
+              label for='chapter' Chapter Title
+              input.form-control type='text' name='chapter'
 
-    .form-group
-      label for='question1' What is the chapter about as a whole?
-      textarea.form-control name="question1"
+            .form-group
+              label for='question1' What is the chapter about as a whole?
+              textarea.form-control name="question1"
 
-    .form-group
-      label for='question2' What is being said in detail, and how?
-      textarea.form-control name="question2"
+            .form-group
+              label for='question2' What is being said in detail, and how?
+              textarea.form-control name="question2"
 
-    .form-group
-      label for='question3' Is the what is being said true, in whole or part?
-      textarea.form-control name="question3"
+            .form-group
+              label for='question3' Is the what is being said true, in whole or part?
+              textarea.form-control name="question3"
 
-    .form-group
-      label for='question4' What of it? If the chapter has given you information, you must ask about its significance. Why does the author think it is important to know these things?
-      textarea.form-control name="question4"
+            .form-group
+              label for='question4' What of it? If the chapter has given you information, you must ask about its significance. Why does the author think it is important to know these things?
+              textarea.form-control name="question4"
 
-    input type="hidden" name='#{Rack::Csrf.field}' value='#{Rack::Csrf.token(env)}'
+            input type="hidden" name='#{Rack::Csrf.field}' value='#{Rack::Csrf.token(env)}'
 
-    p
-      input.btn.btn-default type='submit' value='Record Chapter'
+            p
+              input.btn.btn-default type='submit' value='Record Chapter'
 
-h3.page-header Record Book
+#finish-book.modal.fade tabindex="-1" role="dialog"
+  .modal-dialog
+    .modal-content
+      .modal-body
+        .finish-book
+          form method='POST' action='/#{book.user_id}/#{book.slug}/conclusion' role='form'
+            .form-group
+              label for='question1' What is the chapter about as a whole?
+              textarea.form-control name="question1"
 
-.finish-book
-  form method='POST' action='/#{book.user_id}/#{book.slug}/conclusion' role='form'
-    .form-group
-      label for='question1' What is the chapter about as a whole?
-      textarea.form-control name="question1"
+            .form-group
+              label for='question2' What is being said in detail, and how?
+              textarea.form-control name="question2"
 
-    .form-group
-      label for='question2' What is being said in detail, and how?
-      textarea.form-control name="question2"
+            .form-group
+              label for='question3' Is the what is being said true, in whole or part?
+              textarea.form-control name="question3"
 
-    .form-group
-      label for='question3' Is the what is being said true, in whole or part?
-      textarea.form-control name="question3"
+            .form-group
+              label for='question4' What of it? If the chapter has given you information, you must ask about its significance. Why does the author think it is important to know these things?
+              textarea.form-control name="question4"
 
-    .form-group
-      label for='question4' What of it? If the chapter has given you information, you must ask about its significance. Why does the author think it is important to know these things?
-      textarea.form-control name="question4"
+            input type="hidden" name='#{Rack::Csrf.field}' value='#{Rack::Csrf.token(env)}'
 
-    input type="hidden" name='#{Rack::Csrf.field}' value='#{Rack::Csrf.token(env)}'
-
-    p
-      input.btn.btn-default type='submit' value='Record Book'
+            p
+              input.btn.btn-default type='submit' value='Record Conclusion'
