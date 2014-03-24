@@ -59,7 +59,7 @@ p
         .finish-book
           form method='POST' action='/#{book.user_id}/#{book.slug}/conclusion' role='form'
             .form-group
-              label for='question1' What is the chapter about as a whole?
+              label for='question1' What is the book about as a whole?
               textarea.form-control name="question1"
 
             .form-group
@@ -71,7 +71,7 @@ p
               textarea.form-control name="question3"
 
             .form-group
-              label for='question4' What of it? If the chapter has given you information, you must ask about its significance. Why does the author think it is important to know these things?
+              label for='question4' What of it? If the book has given you information, you must ask about its significance. Why does the author think it is important to know these things?
               textarea.form-control name="question4"
 
             input type="hidden" name='#{Rack::Csrf.field}' value='#{Rack::Csrf.token(env)}'
